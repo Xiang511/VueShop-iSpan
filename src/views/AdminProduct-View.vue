@@ -1,7 +1,7 @@
 <script setup>
-  import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 
-  onMounted(() => {})
+onMounted(() => { })
 </script>
 
 <template>
@@ -10,19 +10,13 @@
       <h3 class="fw-bold mb-6">商品管理(管理員)</h3>
 
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <button
-          class="btn btn-sm btn-success me-2"
-          data-bs-toggle="modal"
-          data-bs-target="#modal-product"
-        >
+        <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#modal-product">
           新增商品
         </button>
       </div>
 
       <div class="row g-5">
-        <div
-          class="px-4 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1"
-        >
+        <div class="px-4 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
           <div class="table-responsive scrollbar mx-n1 px-1">
             <table class="table fs-9 mb-0">
               <thead>
@@ -48,11 +42,8 @@
                     </div>
                   </td>
                   <td class="align-middle py-0">
-                    <a
-                      class="d-block border border-translucent rounded-2"
-                      href="../../../apps/e-commerce/landing/product-details.html"
-                    >
-                      <img src="/assets/img/products/1.png" alt="" width="53" />
+                    <a class="d-block border border-translucent rounded-2" href="#">
+                      <img src="../../assets/img/products/1.png" alt="" width="53" />
                     </a>
                   </td>
                   <td class="align-middle">
@@ -70,11 +61,7 @@
                     <span class="fa-regular fa-star text-warning fs-9 me-1"></span>
                   </td>
                   <td class="text-end">
-                    <button
-                      class="btn btn-sm btn-info me-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modal-product"
-                    >
+                    <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#modal-product">
                       修改
                     </button>
                     <button class="btn btn-sm btn-danger">刪除</button>
@@ -88,23 +75,12 @@
     </div>
   </section>
 
-  <div
-    class="modal fade"
-    id="modal-product"
-    tabindex="-1"
-    aria-labelledby="modal-product-label"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="modal-product" tabindex="-1" aria-labelledby="modal-product-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modal-product-label">新增/修改商品</h5>
-          <button
-            class="btn btn-close p-1"
-            type="button"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <!--商品新增/修改表單-->

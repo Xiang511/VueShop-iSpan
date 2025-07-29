@@ -1,7 +1,7 @@
 <script setup>
-  import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 
-  onMounted(() => {})
+onMounted(() => { })
 </script>
 
 <template>
@@ -29,18 +29,12 @@
                 <tbody class="list" id="cart-table-body">
                   <tr class="cart-table-row btn-reveal-trigger">
                     <td class="align-middle white-space-nowrap py-0">
-                      <a
-                        class="d-block border border-translucent rounded-2"
-                        href="/apps/e-commerce/landing/product-details.html"
-                      >
-                        <img src="/assets/img/products/1.png" alt="" width="53" />
+                      <a class="d-block border border-translucent rounded-2" href="#">
+                        <img src="../../assets/img/products/1.png" alt="" width="53" />
                       </a>
                     </td>
                     <td class="products align-middle">
-                      <a
-                        class="fw-semibold mb-0 line-clamp-2"
-                        href="/apps/e-commerce/landing/product-details.html"
-                      >
+                      <a class="fw-semibold mb-0 line-clamp-2" href="#">
                         Fitbit Sense Advanced Smartwatch with Tools for Heart Health, Stress
                         Management &amp; Skin Temperature Trends, Carbon/Graphite, One Size (S &amp;
                         L Bands)
@@ -63,9 +57,7 @@
                     </td>
                     <td class="total align-middle fw-bold text-body-highlight text-end">$998</td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
-                      <button
-                        class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"
-                      >
+                      <button class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2">
                         <span class="fas fa-trash"></span>
                       </button>
                     </td>

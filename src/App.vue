@@ -1,7 +1,5 @@
 <script setup>
-  import { onMounted } from 'vue'
-
-  onMounted(() => {})
+import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -14,7 +12,7 @@
               <div class="col-auto">
                 <a class="text-decoration-none" href="/">
                   <div class="d-flex align-items-center">
-                    <img src="/assets/img/icons/tangerine.png" alt="我的柑仔電" width="35" />
+                    <img src="../assets/img/icons/tangerine.png" alt="我的柑仔電" width="35" />
                     <h5 class="logo-text ms-2">我的柑仔電</h5>
                   </div>
                 </a>
@@ -23,28 +21,19 @@
                 <ul class="navbar-nav navbar-nav-icons flex-row me-n2">
                   <!--會員-->
                   <li class="nav-item dropdown">
-                    <a
-                      class="nav-link px-2"
-                      id="navbarDropdownUser"
-                      href="#"
-                      role="button"
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="outside"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
+                    <a class="nav-link px-2" id="navbarDropdownUser" href="#" role="button" data-bs-toggle="dropdown"
+                      data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                       <i class="far fa-user-circle"></i>
                       會員中心
                     </a>
                     <div
                       class="dropdown-menu dropdown-menu-end navbar-dropdown-caret py-0 dropdown-profile shadow border mt-2"
-                      aria-labelledby="navbarDropdownUser"
-                    >
+                      aria-labelledby="navbarDropdownUser">
                       <div class="card position-relative border-0">
                         <div class="card-body p-0">
                           <div class="text-center pt-4 pb-3">
                             <div class="avatar avatar-xl">
-                              <img class="rounded-circle" src="/assets/img/icons/user.png" alt="" />
+                              <img class="rounded-circle" src="../assets/img/icons/user.png" alt="" />
                             </div>
                             <h6 class="mt-2 text-body-emphasis">我是會員</h6>
                           </div>
@@ -53,10 +42,7 @@
                           <ul class="nav d-flex flex-column mb-2 pb-1">
                             <li class="nav-item">
                               <a class="nav-link px-3 d-block" href="#!">
-                                <span
-                                  class="me-2 text-body align-bottom"
-                                  data-feather="user"
-                                ></span>
+                                <span class="me-2 text-body align-bottom" data-feather="user"></span>
                                 <span>個人資料</span>
                               </a>
                             </li>
@@ -81,13 +67,11 @@
       </div>
     </section>
 
-    <nav
-      class="navbar-responsive-navitems navbar-expand navbar-light bg-body-emphasis justify-content-between"
-    >
+    <nav class="navbar-responsive-navitems navbar-expand navbar-light bg-body-emphasis justify-content-between">
       <div class="container-small d-flex flex-between-center" data-navbar="data-navbar">
         <ul class="navbar-nav justify-content-end align-items-center py-2">
           <li class="nav-item" data-nav-item="data-nav-item">
-            <router-link class="nav-link" :to="{ name: 'home' }">首頁</router-link>
+            <RouterLink class="nav-link" :to="{ name: 'home' }">首頁</RouterLink>
           </li>
           <!--購物商城-->
 
@@ -96,28 +80,26 @@
           <!--我的訂單-->
 
           <!--商品管理(管理員)-->
+
         </ul>
       </div>
     </nav>
 
-    <router-view />
+    <RouterView />
 
     <section class="bg-body-highlight dark__bg-gray-1100 py-9">
       <div class="container-small">
         <div class="row justify-content-between gy-4">
           <div class="col-12 col-lg-4">
             <div class="d-flex align-items-center mb-3">
-              <img src="/assets/img/icons/logo.png" alt="phoenix" width="27" />
+              <img src="../assets/img/icons/logo.png" alt="phoenix" width="27" />
               <h5 class="logo-text ms-2">phoenix</h5>
             </div>
             <p class="text-body-tertiary mb-1 lh-sm fs-9">
               Phoenix
               是一個具有迷人功能和令人驚嘆佈局的管理儀表板模板。該模板對所有主流瀏覽器都具備響應式設計，並且兼容所有設備和螢幕尺寸。如果需要營利或開發，請自行至該網站購買授權。
             </p>
-            <a
-              target="_blank"
-              href="https://themewagon.com/themes/phoenix-admin-dashboard-webapp-template/"
-            >
+            <a target="_blank" href="https://themewagon.com/themes/phoenix-admin-dashboard-webapp-template/">
               https://themewagon.com/themes/phoenix-admin-dashboard-webapp-template/
             </a>
           </div>

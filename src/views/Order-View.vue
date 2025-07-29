@@ -1,7 +1,7 @@
 <script setup>
-  import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 
-  onMounted(() => {})
+onMounted(() => { })
 </script>
 
 <template>
@@ -43,7 +43,7 @@
                         <tbody class="list" id="cart-table-body">
                           <tr class="cart-table-row btn-reveal-trigger">
                             <td class="align-middle white-space-nowrap py-0">
-                              <img src="/assets/img/products/1.png" alt="" width="53" />
+                              <img src="../../assets/img/products/1.png" alt="" width="53" />
                             </td>
                             <td class="products align-middle">
                               Fitbit Sense Advanced Smartwatch with Tools for Heart Health, Stress

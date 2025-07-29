@@ -1,24 +1,14 @@
 <script setup>
-  import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 
-  onMounted(() => {})
+onMounted(() => { })
 </script>
 
 <template>
   <div class="row flex-center mb-15 mt-11 gy-6 gx-0">
     <div class="col-auto">
-      <img
-        class="d-dark-none"
-        src="/assets/img/spot-illustrations/light_30.png"
-        alt=""
-        width="305"
-      />
-      <img
-        class="d-light-none"
-        src="/assets/img/spot-illustrations/dark_30.png"
-        alt=""
-        width="305"
-      />
+      <img class="d-dark-none" src="../assets/img/spot-illustrations/light_30.png" alt="" width="305" />
+      <img class="d-light-none" src="../assets/img/spot-illustrations/dark_30.png" alt="" width="305" />
     </div>
     <div class="col-auto">
       <div class="text-center text-lg-start">

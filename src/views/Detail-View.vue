@@ -1,7 +1,7 @@
 <script setup>
-  import { onMounted } from 'vue'
+import { onMounted } from 'vue'
 
-  onMounted(() => {})
+onMounted(() => { })
 </script>
 
 <template>
@@ -11,10 +11,10 @@
         <nav class="mb-3" aria-label="breadcrumb">
           <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item">
-              <router-link :to="{ name: 'home' }">購物商城</router-link>
+              <RouterLink :to="{ name: 'home' }">購物商城</RouterLink>
             </li>
             <li class="breadcrumb-item">
-              <router-link :to="{ name: 'product-shop' }">購物商城</router-link>
+              <RouterLink :to="{ name: 'product-shop' }">購物商城</RouterLink>
             </li>
             <li class="breadcrumb-item active" aria-current="page">商品</li>
           </ol>
@@ -23,10 +23,8 @@
           <div class="col-12 col-lg-6">
             <div class="row g-3 mb-3">
               <div class="col-12">
-                <div
-                  class="d-flex align-items-center border border-translucent rounded-3 text-center p-5 h-100"
-                >
-                  <img class="img-fluid" src="/assets/img/products/1.png" alt="" />
+                <div class="d-flex align-items-center border border-translucent rounded-3 text-center p-5 h-100">
+                  <img class="img-fluid" src="../../assets/img/products/1.png" alt="" />
                 </div>
               </div>
             </div>
@@ -69,13 +67,8 @@
                       <button class="btn btn-phoenix-primary px-3" data-type="minus">
                         <span class="fas fa-minus"></span>
                       </button>
-                      <input
-                        class="form-control text-center input-spin-none bg-transparent border-0 outline-none"
-                        style="width: 50px"
-                        type="number"
-                        min="1"
-                        value="1"
-                      />
+                      <input class="form-control text-center input-spin-none bg-transparent border-0 outline-none"
+                        style="width: 50px" type="number" min="1" value="1" />
                       <button class="btn btn-phoenix-primary px-3" data-type="plus">
                         <span class="fas fa-plus"></span>
                       </button>
