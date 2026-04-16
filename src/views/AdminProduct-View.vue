@@ -42,7 +42,7 @@ let postdata = reactive({
 
 const selectedId = ref(null)
 
-function openEdit(item) {
+function EditData(item) {
   selectedId.value = item.id
   postdata.name = item.name
   postdata.category = item.category
@@ -51,7 +51,7 @@ function openEdit(item) {
   postdata.description = item.description
 }
 
-function openCreate() {
+function CreateData() {
   selectedId.value = null
   postdata.name = ''
   postdata.category = ''
@@ -156,7 +156,7 @@ function deleteItem(id) {
           class="btn btn-sm btn-success me-2"
           data-bs-toggle="modal"
           data-bs-target="#modal-product"
-          @click="openCreate"
+          @click="CreateData"
         >
           新增商品
         </button>
@@ -211,7 +211,7 @@ function deleteItem(id) {
                   </td>
                   <td class="text-end">
                     <button
-                      @click="openEdit(item)"
+                      @click="EditData(item)"
                       class="btn btn-sm btn-info me-2"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-product"

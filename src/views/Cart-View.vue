@@ -23,7 +23,7 @@ function getData() {
     })
 }
 
-function deleteItem(id) {
+function Delete(id) {
   fetch(`${import.meta.env.VITE_API_BASE_URL}/Cart/${id}`, {
     method: 'DELETE',
   })
@@ -43,7 +43,7 @@ function deleteItem(id) {
     })
 }
 
-function updateQuantity(id, quantity) {
+function Update(id, quantity) {
   const item = cart.find((item) => item.id === id)
   if (item) {
     item.quantity = Number(quantity)
@@ -111,7 +111,7 @@ let total = computed(() => (parseFloat(subtotal.value) + parseFloat(tax.value)).
                           class="form-control text-center px-0"
                           style="width: 50px"
                           v-model="item.quantity"
-                          @change="updateQuantity(item.id, item.quantity)"
+                          @change="Update(item.id, item.quantity)"
                         >
                           <option value="1" selected>1</option>
                           <option value="2">2</option>
@@ -129,7 +129,7 @@ let total = computed(() => (parseFloat(subtotal.value) + parseFloat(tax.value)).
                     </td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
                       <button
-                        @click="deleteItem(item.id)"
+                        @click="Delete(item.id)"
                         class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"
                       >
                         <span class="fas fa-trash"></span>
