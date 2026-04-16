@@ -1,13 +1,16 @@
 <script setup>
-import { onMounted, reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 
 onMounted(() => {
   getData()
 })
 
-const Products = reactive([])
+let Products = reactive([])
 
 function getData() {
+  if (Products.length > 0) {
+    Products.splice(0)
+  }
   fetch(`${import.meta.env.VITE_API_BASE_URL}/Product/query`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -28,6 +31,119 @@ function getData() {
       console.error('Error fetching data:', error)
     })
 }
+
+let postdata = reactive({
+  name: '',
+  category: '',
+  price: 0,
+  stock: 0,
+  description: '',
+})
+
+const selectedId = ref(null)
+
+function openEdit(item) {
+  selectedId.value = item.id
+  postdata.name = item.name
+  postdata.category = item.category
+  postdata.price = item.price
+  postdata.stock = item.stock
+  postdata.description = item.description
+}
+
+function openCreate() {
+  selectedId.value = null
+  postdata.name = ''
+  postdata.category = ''
+  postdata.price = 0
+  postdata.stock = 0
+  postdata.description = ''
+}
+
+function saveProduct() {
+  if (selectedId.value) {
+    UpdateProduct(selectedId.value)
+  } else {
+    CreateProduct()
+  }
+}
+
+function CreateProduct() {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Product`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: postdata.name,
+      category: postdata.category,
+      price: postdata.price,
+      stock: postdata.stock,
+      description: postdata.description,
+      originalPrice: postdata.price,
+      nowPrice: postdata.price,
+      rate: Math.floor(Math.random() * 5) + 1,
+      image: 'images/products/0.png',
+      status: true,
+    }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log('已經新增商品')
+        getData() // 新增後重新獲取資料
+      } else {
+        console.error('Error creating product:', response.statusText)
+      }
+    })
+    .catch((error) => {
+      console.error('Error creating product:', error)
+    })
+}
+
+function UpdateProduct(id) {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Product/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name: postdata.name,
+      category: postdata.category,
+      price: postdata.price,
+      stock: postdata.stock,
+      description: postdata.description,
+      originalPrice: postdata.price,
+      nowPrice: postdata.price,
+      rate: Math.floor(Math.random() * 5) + 1,
+      image: 'images/products/0.png',
+      status: true,
+    }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(`已經更新商品 ${id}`)
+        getData() // 更新後重新獲取資料
+      } else {
+        console.error('Error updating product:', response.statusText)
+      }
+    })
+    .catch((error) => {
+      console.error('Error updating product:', error)
+    })
+}
+
+function deleteItem(id) {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Product/${id}`, {
+    method: 'DELETE',
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(`已經刪除商品 ${id}`)
+        getData() // 刪除後重新獲取資料
+      } else {
+        console.error('Error deleting product:', response.statusText)
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting product:', error)
+    })
+}
 </script>
 
 <template>
@@ -40,6 +156,7 @@ function getData() {
           class="btn btn-sm btn-success me-2"
           data-bs-toggle="modal"
           data-bs-target="#modal-product"
+          @click="openCreate"
         >
           新增商品
         </button>
@@ -94,13 +211,14 @@ function getData() {
                   </td>
                   <td class="text-end">
                     <button
+                      @click="openEdit(item)"
                       class="btn btn-sm btn-info me-2"
                       data-bs-toggle="modal"
                       data-bs-target="#modal-product"
                     >
                       修改
                     </button>
-                    <button class="btn btn-sm btn-danger">刪除</button>
+                    <button class="btn btn-sm btn-danger" @click="deleteItem(item.id)">刪除</button>
                   </td>
                 </tr>
               </tbody>
@@ -133,11 +251,11 @@ function getData() {
           <!--商品新增/修改表單-->
           <div class="mb-3">
             <label for="product-name" class="form-label fs-9">商品名稱</label>
-            <input type="text" class="form-control" id="product-name" />
+            <input type="text" class="form-control" id="product-name" v-model="postdata.name" />
           </div>
           <div class="mb-3">
             <label for="product-category" class="form-label fs-9">類別</label>
-            <select class="form-select" id="product-category">
+            <select class="form-select" id="product-category" v-model="postdata.category">
               <option selected>OOO分類</option>
               <option value="1">類別1</option>
               <option value="2">類別2</option>
@@ -146,19 +264,24 @@ function getData() {
           </div>
           <div class="mb-3">
             <label for="product-price" class="form-label fs-9">價格</label>
-            <input type="number" class="form-control" id="product-price" />
+            <input type="number" class="form-control" id="product-price" v-model="postdata.price" />
           </div>
           <div class="mb-3">
             <label for="product-stock" class="form-label fs-9">庫存</label>
-            <input type="number" class="form-control" id="product-stock" />
+            <input type="number" class="form-control" id="product-stock" v-model="postdata.stock" />
           </div>
           <div class="mb-3">
             <label for="product-description" class="form-label fs-9">商品描述</label>
-            <textarea class="form-control" id="product-description" rows="3"></textarea>
+            <textarea
+              class="form-control"
+              id="product-description"
+              rows="3"
+              v-model="postdata.description"
+            ></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-primary" type="button">儲存</button>
+          <button @click="saveProduct" class="btn btn-primary" type="button">儲存</button>
           <button class="btn btn-outline-primary" type="button" data-bs-dismiss="modal">
             取消
           </button>
