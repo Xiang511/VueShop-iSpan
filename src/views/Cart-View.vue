@@ -1,7 +1,39 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive, computed } from 'vue'
+import axios from 'axios'
+onMounted(() => {})
 
-onMounted(() => { })
+let cart = reactive([])
+
+try {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Cart`)
+    .then((response) => response.json())
+    .then((data) => {
+      cart.push(...data)
+      console.log(cart)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error)
+    })
+} catch (e) {
+  console.error('Error fetching data:', e)
+}
+
+let cartTotal = computed(() => {
+  return cart.reduce((total, item) => total + item.price * item.quantity, 0)
+})
+let tax = computed(() => (cartTotal.value * 0.05).toFixed(2))
+let Cartsubtotal = computed(() => cartTotal.value)
+let subtotal = computed(() => (cartTotal.value * 0.9).toFixed(2))
+let total = computed(() => (parseFloat(subtotal.value) + parseFloat(tax.value)).toFixed(2))
+
+function deleteItem(id) {
+  let item = cart.find((item) => item.id === id)
+  if (item) {
+    cart.splice(cart.indexOf(item), 1)
+    console.log(`已經移除 ${id}`)
+  }
+}
 </script>
 
 <template>
@@ -26,24 +58,24 @@ onMounted(() => { })
                     <th class="align-middle text-center pe-0">刪除</th>
                   </tr>
                 </thead>
-                <tbody class="list" id="cart-table-body">
+                <tbody v-for="item in cart" :key="item.id" class="list" id="cart-table-body">
                   <tr class="cart-table-row btn-reveal-trigger">
                     <td class="align-middle white-space-nowrap py-0">
                       <a class="d-block border border-translucent rounded-2" href="#">
-                        <img src="../../assets/img/products/1.png" alt="" width="53" />
+                        <img :src="item.image" alt="" width="53" />
                       </a>
                     </td>
                     <td class="products align-middle">
-                      <a class="fw-semibold mb-0 line-clamp-2" href="#">
-                        Fitbit Sense Advanced Smartwatch with Tools for Heart Health, Stress
-                        Management &amp; Skin Temperature Trends, Carbon/Graphite, One Size (S &amp;
-                        L Bands)
-                      </a>
+                      {{ item.name }}
                     </td>
-                    <td class="price align-middle text-body fs-9 text-end">$998</td>
+                    <td class="price align-middle text-body fs-9 text-end">${{ item.price }}</td>
                     <td class="fs-8">
                       <div class="d-flex justify-content-center align-items-center">
-                        <select class="form-control text-center px-0" style="width: 50px">
+                        <select
+                          class="form-control text-center px-0"
+                          style="width: 50px"
+                          v-model="item.quantity"
+                        >
                           <option value="1" selected>1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -55,16 +87,35 @@ onMounted(() => { })
                         </select>
                       </div>
                     </td>
-                    <td class="total align-middle fw-bold text-body-highlight text-end">$998</td>
+                    <td class="total align-middle fw-bold text-body-highlight text-end">
+                      ${{ item.price * item.quantity }}
+                    </td>
                     <td class="align-middle white-space-nowrap text-end pe-0 ps-3">
-                      <button class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2">
+                      <button
+                        @click="deleteItem(item.id)"
+                        class="btn btn-sm text-body-tertiary text-opacity-85 text-body-tertiary-hover me-2"
+                      >
                         <span class="fas fa-trash"></span>
                       </button>
                     </td>
                   </tr>
+                </tbody>
+              </table>
+              <table>
+                <thead>
+                  <tr>
+                    <th class="white-space-nowrap align-middle fs-10"></th>
+                    <th class="white-space-nowrap align-middle" style="min-width: 300px"></th>
+                    <th class="align-middle text-end" style="width: 100px"></th>
+                    <th class="align-middle text-center" style="width: 100px"></th>
+                    <th class="align-middle text-end" style="width: 100px"></th>
+                    <th class="align-middle text-center pe-0"></th>
+                  </tr>
+                </thead>
+                <tbody class="list" id="cart-table-body">
                   <tr class="cart-table-row btn-reveal-trigger">
                     <td class="text-body-emphasis ps-0 fs-8" colspan="4">小計 :</td>
-                    <td class="text-body-emphasis fw-bold text-end fs-8">$691</td>
+                    <td class="text-body-emphasis fw-bold text-end fs-8">${{ Cartsubtotal }}</td>
                     <td></td>
                   </tr>
                 </tbody>
@@ -86,7 +137,7 @@ onMounted(() => { })
               <div>
                 <div class="d-flex justify-content-between">
                   <p class="text-body">商品總金額 :</p>
-                  <p class="text-body-emphasis">$691</p>
+                  <p class="text-body-emphasis">${{ cartTotal }}</p>
                 </div>
                 <div class="d-flex justify-content-between">
                   <p class="text-body">折扣 :</p>
@@ -94,16 +145,16 @@ onMounted(() => { })
                 </div>
                 <div class="d-flex justify-content-between">
                   <p class="text-body">稅(5%) :</p>
-                  <p class="text-body-emphasis">$126.20</p>
+                  <p class="text-body-emphasis">${{ tax }}</p>
                 </div>
                 <div class="d-flex justify-content-between">
                   <p class="text-body">小計 :</p>
-                  <p class="text-body-emphasis">$665</p>
+                  <p class="text-body-emphasis">${{ subtotal }}</p>
                 </div>
               </div>
               <div class="d-flex justify-content-between border-y border-dashed py-3 mb-4">
                 <h4 class="mb-0">總計 :</h4>
-                <h4 class="mb-">$695</h4>
+                <h4 class="mb-">${{ total }}</h4>
               </div>
               <button class="btn btn-primary w-100">
                 結帳
