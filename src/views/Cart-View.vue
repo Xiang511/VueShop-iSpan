@@ -1,11 +1,17 @@
 <script setup>
 import { onMounted, reactive, computed } from 'vue'
 import axios from 'axios'
-onMounted(() => {})
+onMounted(() => {
+  getData()
+})
 
 let cart = reactive([])
 
-try {
+function getData() {
+  if (cart.length > 0) {
+    cart = []
+  }
+
   fetch(`${import.meta.env.VITE_API_BASE_URL}/Cart`)
     .then((response) => response.json())
     .then((data) => {
@@ -15,8 +21,46 @@ try {
     .catch((error) => {
       console.error('Error fetching data:', error)
     })
-} catch (e) {
-  console.error('Error fetching data:', e)
+}
+
+function deleteItem(id) {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Cart/${id}`, {
+    method: 'DELETE',
+  })
+    .then((response) => {
+      if (response.ok) {
+        const index = cart.findIndex((item) => item.id === id)
+        if (index !== -1) {
+          cart.splice(index, 1)
+        }
+        console.log(`已經刪除 ${id}`)
+      } else {
+        console.error('Error deleting item:', response.statusText)
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting item:', error)
+    })
+}
+
+function updateQuantity(id, quantity) {
+  const item = cart.find((item) => item.id === id)
+  if (item) {
+    item.quantity = Number(quantity)
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/Cart/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...item, quantity: Number(quantity) }),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(`已經更新 ${id} 的數量為 ${quantity}`)
+        }
+      })
+      .catch((error) => {
+        console.error('Error updating quantity:', error)
+      })
+  }
 }
 
 let cartTotal = computed(() => {
@@ -26,14 +70,6 @@ let tax = computed(() => (cartTotal.value * 0.05).toFixed(2))
 let Cartsubtotal = computed(() => cartTotal.value)
 let subtotal = computed(() => (cartTotal.value * 0.9).toFixed(2))
 let total = computed(() => (parseFloat(subtotal.value) + parseFloat(tax.value)).toFixed(2))
-
-function deleteItem(id) {
-  let item = cart.find((item) => item.id === id)
-  if (item) {
-    cart.splice(cart.indexOf(item), 1)
-    console.log(`已經移除 ${id}`)
-  }
-}
 </script>
 
 <template>
@@ -75,6 +111,7 @@ function deleteItem(id) {
                           class="form-control text-center px-0"
                           style="width: 50px"
                           v-model="item.quantity"
+                          @change="updateQuantity(item.id, item.quantity)"
                         >
                           <option value="1" selected>1</option>
                           <option value="2">2</option>

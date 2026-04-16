@@ -1,7 +1,41 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
+import func from '../../vue-temp/vue-editor-bridge'
 
-onMounted(() => { })
+onMounted(() => {
+  getData()
+})
+
+let order = reactive([])
+
+function getData() {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Order`)
+    .then((response) => response.json())
+    .then((data) => {
+      order.push(...data)
+      console.log(order)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error)
+    })
+}
+
+function deleteItem(id) {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Order/${id}`, {
+    method: 'DELETE',
+  })
+    .then((response) => {
+      if (response.ok) {
+        console.log(`已經刪除 ${id}`)
+        getData() // 刪除後重新獲取資料
+      } else {
+        console.error('Error deleting item:', response.statusText)
+      }
+    })
+    .catch((error) => {
+      console.error('Error deleting item:', error)
+    })
+}
 </script>
 
 <template>
