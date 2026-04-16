@@ -17,9 +17,9 @@ const router = createRouter({
     },
     //會員-商品詳細頁面
     {
-      path: '/shop',
-      name: 'shop',
-      component: () => import('@/views/Shop-View.vue'),
+      path: '/Product/:id',
+      name: 'product-detail',
+      component: () => import('@/views/Detail-View.vue'),
     },
     //會員-購物車
     {

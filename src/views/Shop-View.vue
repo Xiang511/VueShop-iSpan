@@ -1,20 +1,37 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import axios from 'axios'
+import ProductDetail from '@/components/productDetail.vue'
 onMounted(() => {
-  initializeOffcanvas()
+  getData()
 })
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
-
-// axios
-//   .get(`${API_BASE_URL}/Product/query`)
-//   .then((response) => {
-//     console.log(response.data)
-//   })
-//   .catch((error) => {
-//     console.error('Error fetching data:', error)
-//   })
+let Products = reactive([])
+let URL = `${import.meta.env.VITE_API_BASE_URL}`
+function getData() {
+  if (Products.length > 0) {
+    Products.splice(0)
+  }
+  fetch(`${URL}/Product/query`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      keyword: null,
+      category: null,
+      priceLower: null,
+      priceUpper: null,
+      rateLower: null,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      Products.push(...data)
+      console.log(Products)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error)
+    })
+}
 </script>
 
 <template>
@@ -336,7 +353,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
         <div class="col-lg-9 col-xxl-10">
           <div class="row gx-3 gy-6 mb-8">
             <!-- 產品清單 -->
-            <div class="col-12 col-sm-6 col-md-4 col-xxl-2">
+            <div v-for="item in Products" :key="item.id" class="col-12 col-sm-6 col-md-4 col-xxl-2">
               <div class="product-card-container h-100">
                 <div class="position-relative text-decoration-none product-card h-100">
                   <div class="d-flex flex-column justify-content-between h-100">
@@ -345,13 +362,16 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
                         <button class="btn btn-wish btn-wish-primary z-2">
                           <span class="fas fa-shopping-cart"></span>
                         </button>
-                        <img class="img-fluid" src="../../assets/img/products/1.png" alt="" />
+                        <img class="img-fluid" :src="`${URL}/../${item.image}`" alt="" />
                       </div>
-                      <!-- <RouterLink class="stretched-link" :to="{ name: 'product-detail', params: { id: 6 } }">
+                      <RouterLink
+                        class="stretched-link"
+                        :to="{ name: 'product-detail', params: { id: item.id } }"
+                      >
                         <h6 class="mb-2 lh-sm line-clamp-3 product-name">
-                          PlayStation 5 DualSense Wireless Controller
+                          {{ item.name }}
                         </h6>
-                      </RouterLink> -->
+                      </RouterLink>
                       <p class="fs-9">
                         <span class="fa fa-star text-warning"></span>
                         <span class="fa fa-star text-warning"></span>
@@ -362,8 +382,10 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
                     </div>
                     <div>
                       <div class="d-flex align-items-center mb-1">
-                        <p class="me-2 text-body text-decoration-line-through mb-0">$125</p>
-                        <h3 class="text-body-emphasis mb-0">$89</h3>
+                        <p class="me-2 text-body text-decoration-line-through mb-0">
+                          ${{ item.originalPrice }}
+                        </p>
+                        <h3 class="text-body-emphasis mb-0">${{ item.price }}</h3>
                       </div>
                     </div>
                   </div>
