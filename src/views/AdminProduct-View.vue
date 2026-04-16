@@ -1,7 +1,33 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, reactive } from 'vue'
 
-onMounted(() => { })
+onMounted(() => {
+  getData()
+})
+
+const Products = reactive([])
+
+function getData() {
+  fetch(`${import.meta.env.VITE_API_BASE_URL}/Product/query`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      keyword: null,
+      category: null,
+      priceLower: null,
+      priceUpper: null,
+      rateLower: null,
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      Products.push(...data)
+      console.log(Products)
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error)
+    })
+}
 </script>
 
 <template>
@@ -10,13 +36,19 @@ onMounted(() => { })
       <h3 class="fw-bold mb-6">商品管理(管理員)</h3>
 
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <button class="btn btn-sm btn-success me-2" data-bs-toggle="modal" data-bs-target="#modal-product">
+        <button
+          class="btn btn-sm btn-success me-2"
+          data-bs-toggle="modal"
+          data-bs-target="#modal-product"
+        >
           新增商品
         </button>
       </div>
 
       <div class="row g-5">
-        <div class="px-4 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1">
+        <div
+          class="px-4 bg-body-emphasis border-top border-bottom border-translucent position-relative top-1"
+        >
           <div class="table-responsive scrollbar mx-n1 px-1">
             <table class="table fs-9 mb-0">
               <thead>
@@ -34,7 +66,7 @@ onMounted(() => { })
                   <th class="align-middle text-end" style="width: 200px">功能</th>
                 </tr>
               </thead>
-              <tbody class="list" id="products-table-body">
+              <tbody v-for="item in Products" :key="item.id" class="list" id="products-table-body">
                 <tr class="position-static">
                   <td class="fs-9 align-middle">
                     <div class="form-check mb-0 fs-8">
@@ -43,16 +75,16 @@ onMounted(() => { })
                   </td>
                   <td class="align-middle py-0">
                     <a class="d-block border border-translucent rounded-2" href="#">
-                      <img src="../../assets/img/products/1.png" alt="" width="53" />
+                      <img :src="`../../assets/img/products/${item.id}.png`" alt="" width="53" />
                     </a>
                   </td>
                   <td class="align-middle">
                     <a class="" href="#">
-                      商品名稱~商品名稱~商品名稱~商品名稱~商品名稱~商品名稱~商品名稱~
+                      {{ item.name }}
                     </a>
                   </td>
-                  <td class="align-middle white-space-nowrap">OOO分類</td>
-                  <td class="align-middle white-space-nowrap">$39 ($52)</td>
+                  <td class="align-middle white-space-nowrap">{{ item.category }}</td>
+                  <td class="align-middle white-space-nowrap">${{ item.price }} ($52)</td>
                   <td class="align-middle white-space-nowrap">
                     <span class="fa fa-star text-warning fs-9 me-1"></span>
                     <span class="fa fa-star text-warning fs-9 me-1"></span>
@@ -61,7 +93,11 @@ onMounted(() => { })
                     <span class="fa-regular fa-star text-warning fs-9 me-1"></span>
                   </td>
                   <td class="text-end">
-                    <button class="btn btn-sm btn-info me-2" data-bs-toggle="modal" data-bs-target="#modal-product">
+                    <button
+                      class="btn btn-sm btn-info me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modal-product"
+                    >
                       修改
                     </button>
                     <button class="btn btn-sm btn-danger">刪除</button>
@@ -75,12 +111,23 @@ onMounted(() => { })
     </div>
   </section>
 
-  <div class="modal fade" id="modal-product" tabindex="-1" aria-labelledby="modal-product-label" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="modal-product"
+    tabindex="-1"
+    aria-labelledby="modal-product-label"
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modal-product-label">新增/修改商品</h5>
-          <button class="btn btn-close p-1" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            class="btn btn-close p-1"
+            type="button"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!--商品新增/修改表單-->
