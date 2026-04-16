@@ -1,5 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+const WEB_TITLE = import.meta.env.VITE_WEB_TITLE
 </script>
 
 <template>
@@ -13,7 +14,7 @@ import { RouterLink, RouterView } from 'vue-router'
                 <a class="text-decoration-none" href="/">
                   <div class="d-flex align-items-center">
                     <img src="../assets/img/icons/tangerine.png" alt="我的柑仔電" width="35" />
-                    <h5 class="logo-text ms-2">我的柑仔電</h5>
+                    <h5 class="logo-text ms-2">{{ WEB_TITLE }}</h5>
                   </div>
                 </a>
               </div>
